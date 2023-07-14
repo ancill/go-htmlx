@@ -2,18 +2,36 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"net/http"
+	"text/template"
 )
+
+type Film struct {
+	Title string
+	Director string
+}
 
 func main() {
 	fmt.Println("hello")
 
 	h1 := func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "hello\n")
-		io.WriteString(w, r.Method)
+		tmpl := template.Must(template.ParseFiles("index.html"))
+		
+		film := map[string][]Film{
+			"Films": {
+				{Title: "Casablanca", Director: "Michael Curtiz"},
+				{Title: "Cool Hand Luke", Director: "Stuart Rosenberg"},
+				{Title: "Bullitt", Director: "Peter Yates"},
+			},
+		}
+		
+		tmpl.Execute(w, film)
 	}
+
+	
+
+
 
 	http.HandleFunc("/", h1)
 
