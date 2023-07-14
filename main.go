@@ -37,9 +37,10 @@ func main() {
 
 		title := r.PostFormValue("title")
 		director := r.PostFormValue("director")
-		htmlStr := fmt.Sprintf("<li class='list-group-item light-border-subtle'> %s - %s</li>", title, director)
-		tmpl, _ := template.New("t").Parse(htmlStr) 
-		tmpl.Execute(w, nil)
+		// htmlStr := fmt.Sprintf("<li class='list-group-item light-border-subtle'> %s - %s</li>", title, director)
+		// tmpl, _ := template.New("t").Parse(htmlStr) 
+	   	tmpl := template.Must(template.ParseFiles("index.html"))
+		tmpl.ExecuteTemplate(w,"film-list-element", Film{Title: title, Director: director})
 	}
 
 
